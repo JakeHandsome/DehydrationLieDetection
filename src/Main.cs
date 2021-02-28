@@ -3,6 +3,8 @@ using System.Linq;
 using System.Timers;
 using System.Threading;
 using System;
+using System.IO;
+using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
 namespace DehydrationLieDetector
@@ -12,6 +14,10 @@ namespace DehydrationLieDetector
       public static int Time { get; set; }
       public static async Task Main(string[] args)
       {
+         if (File.Exists("persist.json"))
+         {
+            Time = JObject.Parse(File.ReadAllText("persist.json"))["Time"].Value<int>();
+         }
          var channelname = "kkcomics";
          var TwitchHttpsAPI = new TwitchAPI(Environment.GetEnvironmentVariable("TWITCH_OAUTH"));
          var channelId = TwitchHttpsAPI.GetIdOfChannel(channelname);
