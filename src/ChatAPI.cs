@@ -1,7 +1,9 @@
+using System.IO;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using IrcDotNet;
+using Newtonsoft.Json;
 
 namespace DehydrationLieDetector
 {
@@ -62,6 +64,7 @@ namespace DehydrationLieDetector
                case "exit":
                   isExit = true;
                   SendMessageInChannel("Dehydration Bot Offline BibleThump");
+                  File.WriteAllText("persist.json", JsonConvert.SerializeObject(new { Time = Program.Time }));
                   Thread.Sleep(1000);
                   Environment.Exit(0);
                   break;
