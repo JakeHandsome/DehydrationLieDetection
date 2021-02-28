@@ -61,6 +61,9 @@ namespace DehydrationLieDetector
             {
                case "exit":
                   isExit = true;
+                  SendMessageInChannel("Dehydration Bot Offline BibleThump");
+                  Thread.Sleep(1000);
+                  Environment.Exit(0);
                   break;
                default:
                   if (!string.IsNullOrEmpty(command))
