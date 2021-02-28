@@ -132,7 +132,7 @@ namespace DehydrationLieDetector
          {
             if (e.Text.ToLower().Contains("dehydrationliedetection"))
             {
-               SendMessageInChannel($"@{e.Source.Name} stfu guy");
+               SendMessageInChannel($"@{e.Source.Name} I am a robot. Look at my insides https://github.com/JakeHandsome/DehydrationLieDetection.");
             }
             if (e.Text.ToLower().StartsWith("!drink"))
             {
