@@ -13,7 +13,6 @@ namespace DehydrationLieDetector
       public string Password { get; private set; }
       public string Channel { get; private set; }
       public string Username { get; private set; }
-      private static readonly string TimeFormat = @"hh\:mm\:ss";
       private IrcDotNet.TwitchIrcClient TwitchClient;
       public ChatAPI(string server, string password, string channel, string username)
       {
@@ -140,10 +139,17 @@ namespace DehydrationLieDetector
             {
                SendMessageInChannel($"@{e.Source.Name} I am a robot. Look at my insides https://github.com/JakeHandsome/DehydrationLieDetection.");
             }
-            if (e.Text.ToLower().StartsWith("!drink"))
+            else if (e.Text.ToLower().StartsWith("!drink"))
             {
                SendDehydrationUpdate();
             }
+#if DEBUG
+            else if (e.Text.ToLower().StartsWith("!debug"))
+            {
+               Program.Time = Int32.Parse(e.Text.Split(' ')[1]);
+               SendDehydrationUpdate();
+            }
+#endif
             // Read message.
             Console.WriteLine("[{0}]({1}): {2}.", channel.Name, e.Source.Name, e.Text);
          }
@@ -212,17 +218,39 @@ namespace DehydrationLieDetector
 
       public void SendDehydrationUpdate()
       {
+         string displayedTime = GetTimeAsMinimalString(Math.Abs(Program.Time));
          if (Program.Time == 0)
          {
             SendMessageInChannel($"@kkcomics can drink 🌊💦💦💦");
          }
          else if (Program.Time > 0)
          {
-            SendMessageInChannel($"@kkcomics cannot drink 🚫💦🚫 for {TimeSpan.FromSeconds(Program.Time).ToString(TimeFormat)}");
+            SendMessageInChannel($"@kkcomics cannot drink 🚫💦🚫 for {displayedTime}");
          }
          else
          {
-            SendMessageInChannel($"@kkcomics can drink 🌊💦💦💦. Kyle has a {TimeSpan.FromSeconds(Math.Abs(Program.Time)).ToString(TimeFormat)} buffer.");
+            SendMessageInChannel($"@kkcomics can drink 🌊💦💦💦. Kyle has a {displayedTime} buffer.");
+         }
+      }
+
+      private string GetTimeAsMinimalString(int time)
+      {
+         var ts = TimeSpan.FromSeconds(time);
+         if (time < 60)
+         {
+            return ts.ToString("s' seconds'");
+         }
+         else if (time < 60 * 60)
+         {
+            return ts.ToString("m':'ss");
+         }
+         else if (time < 60 * 60 * 24)
+         {
+            return ts.ToString("h':'mm':'ss");
+         }
+         else
+         {
+            return ts.ToString("d' days 'h':'mm':'ss");
          }
       }
    }
