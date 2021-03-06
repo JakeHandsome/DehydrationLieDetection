@@ -41,6 +41,7 @@ namespace DehydrationLieDetector
 
          var t = new System.Threading.Timer((o) =>
          {
+            bool active = Time != 0;
             if (Time > 0)
             {
                Time--;
@@ -49,6 +50,14 @@ namespace DehydrationLieDetector
             {
                Time++;
             }
+
+            var absTime = Math.Abs(Time);
+            if ((absTime == 0 && active) || absTime == 60 || absTime % 600 == 0)
+            {
+               ChatAPI.SendDehydrationUpdate();
+            }
+
+
          }, null, 0, 1000);
 #if DEBUG
          ChatAPI.SendMessageInChannel($"MrDestructoid This is a Test {Guid.NewGuid()} MrDestructoid");
