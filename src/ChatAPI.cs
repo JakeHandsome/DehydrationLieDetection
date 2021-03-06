@@ -135,7 +135,7 @@ namespace DehydrationLieDetector
          var channel = (IrcChannel)sender;
          if (e.Source is IrcUser)
          {
-            if (e.Text.ToLower().Contains("dehydrationliedetection"))
+            if (e.Text.ToLower().Contains(Username.ToLower()))
             {
                SendMessageInChannel($"@{e.Source.Name} I am a robot. Look at my insides https://github.com/JakeHandsome/DehydrationLieDetection.");
             }

@@ -114,11 +114,11 @@ namespace DehydrationLieDetector
             switch (title)
             {
                case "Dehydrate":
-                  Program.Time += 60;
+                  Program.Time += cost + 10;
                   ChatAPI.SendDehydrationUpdate();
                   break;
                case "REhydrate":
-                  Program.Time -= 60;
+                  Program.Time -= cost + 10;
                   ChatAPI.SendDehydrationUpdate();
                   break;
                default:
